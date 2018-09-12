@@ -1,51 +1,136 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+[![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
+[![Coverage Status][coverage-image]][coverage-url]
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+cornerstone WADO Image Loader
+=============================
 
-## About Laravel
+A [cornerstone](https://github.com/cornerstonejs/cornerstone) Image Loader for DICOM P10 instances over
+HTTP (WADO-URI) or DICOMWeb (WADO-RS).  This can be used to integrate cornerstone with WADO-URI
+servers, DICOMWeb servers or any other HTTP based server that returns DICOM P10 instances
+ (e.g. [Orthanc](http://www.orthanc-server.com/) or custom servers)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+Troubleshooting
+---------------
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Having problems viewing your images with cornerstonWADOImageLoader?  Check out the
+[troubleshooting guide](https://github.com/cornerstonejs/cornerstoneWADOImageLoader/wiki/troubleshooting).
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+Live Examples
+---------------
 
-## Learning Laravel
+[Click here for a live example of this library in use!](http://rawgithub.com/cornerstonejs/cornerstoneWADOImageLoader/master/examples/index.html)
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+You can also see it in action with the
+[cornerstoneDemo application](https://github.com/chafey/cornerstoneDemo).
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+Install
+-------
 
-## Laravel Sponsors
+Get the distributed unminimized files:
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+* [cornerstoneWADOImageLoader.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoader.js)
+* [cornerstoneWADOImageLoaderCodecs.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoaderCodecs.js)
+* [cornerstoneWADOImageLoaderWebWorker.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoaderWebWorker.js)
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
+or the distributed minimized files:
 
-## Contributing
+* [cornerstoneWADOImageLoader.min.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoader.min.js)
+* [cornerstoneWADOImageLoaderCodecs.min.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoaderCodecs.min.js)
+* [cornerstoneWADOImageLoaderWebWorker.min.js](https://unpkg.com/cornerstone-wado-image-loader/dist/cornerstoneWADOImageLoaderWebWorker.min.js)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+Usage
+-------
 
-## Security Vulnerabilities
+The cornerstoneWADOImageLoader depends on the following external libraries which should be loaded before cornerstoneWADOImageLoader.js:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
 
-## License
+1. [dicomParser](https://github.com/cornerstonejs/dicomParser) 
+2. [cornerstone](https://github.com/cornerstonejs/cornerstone)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+*New in 1.0.0*: Specify the cornerstone instance you want to register the loader with.
+
+````javascript
+cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
+````
+
+Have your code configure the web worker framework with the paths to the web worker and the codecs:
+
+```javascript
+   var config = {
+        webWorkerPath : '../../dist/cornerstoneWADOImageLoaderWebWorker.js',
+        taskConfiguration: {
+            'decodeTask' : {
+                codecsPath: '../dist/cornerstoneWADOImageLoaderCodecs.js'
+            }
+        }
+    };
+    cornerstoneWADOImageLoader.webWorkerManager.initialize(config);
+```
+
+See the [web workers](docs/WebWorkers.md) documentation for more details on configuring.
+
+Key Features
+------------
+
+* Implements a [cornerstone ImageLoader](https://github.com/cornerstonejs/cornerstone/wiki/ImageLoader) for DICOM P10 Instances via a HTTP get request.
+  * Can be used with a WADO-URI server
+  * Can be used with Orthanc's file endpoint
+  * Can be used with any server that returns DICOM P10 instances via HTTP GET
+* Implements a [cornerstone ImageLoader](https://github.com/cornerstonejs/cornerstone/wiki/ImageLoader) for WADO-RS (DICOMWeb)
+* Supports many popular transfer syntaxes and photometric interpretations [see full list](https://github.com/cornerstonejs/cornerstoneWADOImageLoader/blob/master/docs/TransferSyntaxes.md) and [codec](docs/Codecs.md) for more information.
+* Framework to execute CPU intensive tasks in [web workers](docs/WebWorkers.md)
+  * Used for image decoding
+  * Can be used for your own CPU intensive tasks (e.g. image processing)
+
+Backlog
+-------
+
+* Support for images with pixel padding
+* Support for high bit (e.g. mask out burned in overlays)
+* Free up DICOM P10 instance after decoding to reduce memory consumption
+* Add support for compressed images to WADO-RS loader
+* Look at using EMSCRIPEN based build of IJG for JPEG
+* Consolidate all EMSCRIPTEN codecs into one build to cut down on memory use and startup times
+* Add support for bulk data items to WADO-RS Loader
+* Add events to webWorkerManager so its activity can be monitored
+* Add support for issuing progress events from web worker tasks
+
+FAQ
+===
+
+_Why is this a separate library from cornerstone?_
+
+Mainly to avoid adding a dependency to cornerstone for the DICOM parsing library.  While cornerstone is
+intended to be used to display medical images that are stored in DICOM, cornerstone aims to simplify
+the use of medical imaging and therefore tries to hide some of the complexity that exists within
+DICOM.  It is also desirable to support display of non DICOM images so a DICOM independent image model
+makes sense.
+
+_How do I build this library myself?_
+
+See the documentation [here](docs/Building.md)
+
+_How do I add my own custom web worker tasks?_
+
+See the documentation [here](docs/WebWorkers.md)
+
+_How do I create imageIds that work with this image loader?_
+
+See the documentation [here](docs/ImageIds.md)
+
+Copyright
+============
+Copyright 2016 Chris Hafey [chafey@gmail.com](mailto:chafey@gmail.com)
+
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
+[license-url]: LICENSE
+
+[npm-url]: https://npmjs.org/package/cornerstone-wado-image-loader
+[npm-version-image]: http://img.shields.io/npm/v/cornerstone-wado-image-loader.svg?style=flat
+[npm-downloads-image]: http://img.shields.io/npm/dm/cornerstone-wado-image-loader.svg?style=flat
+
+[travis-url]: http://travis-ci.org/cornerstonejs/cornerstoneWADOImageLoader
+[travis-image]: https://travis-ci.org/cornerstonejs/cornerstoneWADOImageLoader.svg?branch=master
+
+[coverage-url]: https://coveralls.io/github/cornerstonejs/cornerstoneWADOImageLoader?branch=master
+[coverage-image]: https://coveralls.io/repos/github/cornerstonejs/cornerstoneWADOImageLoader/badge.svg?branch=master
