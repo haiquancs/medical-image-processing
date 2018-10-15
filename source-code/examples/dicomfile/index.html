@@ -20,6 +20,11 @@
     <input type="checkbox" id="toggleModalityLUT">Apply Modality LUT</input>
     <input type="checkbox" id="toggleVOILUT">Apply VOI LUT</input>
     <br>
+    <br>
+    <button id="x256" class="btn">256x256</button>
+    <button id="x512" class="btn">512x512</button>
+    <br>
+    <br>
     <div class="row">
         <div class="col-md-7">
             <div style="width:650px;height:650px;position:relative;color: white;display:inline-block;border-style:solid;border-color:black;"
@@ -224,6 +229,17 @@
             });
         }, function(err) {
             alert(err);
+        });
+        document.getElementById('x256').addEventListener('click', function (e) {
+            element.style.width = '256px';
+            element.style.height = '256px';
+            cornerstone.resize(element);
+        });
+
+        document.getElementById('x512').addEventListener('click', function (e) {
+            element.style.width = '512px';
+            element.style.height = '512px';
+            cornerstone.resize(element);
         });
     }
 
