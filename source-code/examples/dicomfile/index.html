@@ -17,12 +17,16 @@
                    aria-describedby="inputGroupFileAddon04">
         </div>
     </div>
-    <input type="checkbox" id="toggleModalityLUT">Apply Modality LUT</input>
-    <input type="checkbox" id="toggleVOILUT">Apply VOI LUT</input>
+    <input type="hidden" id="toggleModalityLUT"></input>
+    <input type="hidden" id="toggleVOILUT"></input>
     <br>
     <br>
     <button id="x256" class="btn">256x256</button>
     <button id="x512" class="btn">512x512</button>
+    <button id="hFlip" type="button" class="btn">Đối Xứng (T-P)</button>
+    <button id="vFlip" type="button" class="btn">Đối Xứng (T-D)</button>
+    <button id="lRotate" type="button" class="btn">Xoay Trái</button>
+    <button id="rRotate" type="button" class="btn">Xoay Phải</button>
     <br>
     <br>
     <div class="row">
@@ -65,7 +69,8 @@
             <span>Decode Time: </span><span id="decodeTime"></span><br>
         </div>
     </div>
-    <button id="reset" type="button" class="btn btn-default">Reset</button>
+    <button id="reset" type="button" class="btn">Reset</button>
+    <button id="save" class="btn">Lưu Ảnh</button>
 </div>
 </body>
 
@@ -240,6 +245,38 @@
             element.style.width = '512px';
             element.style.height = '512px';
             cornerstone.resize(element);
+        });
+
+        // Add event handlers to flip or rotate the image
+        document.getElementById('hFlip').addEventListener('click', function (e) {
+            const viewport = cornerstone.getViewport(element);
+            viewport.hflip = !viewport.hflip;
+            cornerstone.setViewport(element, viewport);
+        });
+
+        document.getElementById('vFlip').addEventListener('click', function (e) {
+            const viewport = cornerstone.getViewport(element);
+            viewport.vflip = !viewport.vflip;
+            cornerstone.setViewport(element, viewport);
+        });
+
+        document.getElementById('lRotate').addEventListener('click', function (e) {
+            const viewport = cornerstone.getViewport(element);
+            viewport.rotation-=90;
+            cornerstone.setViewport(element, viewport);
+        });
+
+        document.getElementById('rRotate').addEventListener('click', function (e) {
+            const viewport = cornerstone.getViewport(element);
+            viewport.rotation+=90;
+            cornerstone.setViewport(element, viewport);
+        });
+
+        // Tool button event handlers that set the new active tool
+        document.getElementById('save').addEventListener('click', function() {
+            var filename = $('input[type=file]').val().substr(12, $('input[type=file]').val().length);
+            cornerstoneTools.saveAs(element, filename);
+            return false;
         });
     }
 
