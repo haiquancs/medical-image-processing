@@ -1,3 +1,11 @@
+﻿BTL-Nhóm 1
+__________________Thành Viên___________________________________________________________
+Trịnh Hải Quân (nt)
+Nguyễn Đăng An
+Trần Khắc Việt Hoàng
+_______________________________________________________________________________________
+Dự án nằm trong thư mục : cornerstoneWADOImageLoader/examples/dicomfile/index.html
+_______________________________________________________________________________________
 [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-url] [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
 [![Coverage Status][coverage-image]][coverage-url]
 
